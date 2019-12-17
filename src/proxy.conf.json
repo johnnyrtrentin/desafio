@@ -1,0 +1,14 @@
+{
+    "/accounts/*": {
+        "target": "https://accounts.homolog.fluig.io",
+        "secure": true,
+        "changeOrigin": true,
+        "logLevel": "debug"
+    },
+    "/tasks/*": {
+        "target": "https://tasks-homolog.k8s-platform-dev-us-east-1.fluig.io",
+        "secure": true,
+        "changeOrigin": true,
+        "logLevel": "debug"
+    }
+}
