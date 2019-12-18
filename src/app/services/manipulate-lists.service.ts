@@ -1,24 +1,34 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { retry } from 'rxjs/operators';
+import { retry, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+
+import { ListModel } from '../models/list-create.model';
+
+import { AuthenticationService } from '../services/authetication.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ManipulateListsService {
 
-  constructor(private http: HttpClient) { }
-
-  private tasksURL = '/accounts/oauth/token?grant_type=password&response_type=token&client_id=demo';
-  public token;
+  private tasksURL = '/tasks/api/v1/lists/';
+  
+  constructor(private http: HttpClient, private auth: AuthenticationService) { }
 
   httpHeader = {
-    headers: new HttpHeaders({ Authorization: 'Basic ZGVtbzpzU2R4T1lEQU0zRkJO' })
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
   };
 
-  doAuthentication(user: string, password: string): Observable<any> {
-    return this.http.post<any>(this.tasksURL + `&username=${user}&password=${password}`, null, this.httpHeader)
+  createList(list: ListModel): Observable<ListModel> {
+    return this.http.post<ListModel>(this.tasksURL, list, this.httpHeader)
       .pipe(retry(3));
   }
+
+  //TODO
+  // updateList(): Observable<object> {}
+  // deleteList(): Observable<object> {}
+  // editList(): Observable<object> {}
 }

@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { retry, catchError, switchMap } from 'rxjs/operators';
+import { retry, map } from 'rxjs/operators';
 
+@Injectable({ providedIn: 'root' })
 
-@Injectable({
-  providedIn: 'root'
-})
 export class AuthenticationService {
 
   private fluigURL = '/accounts/oauth/token?grant_type=password&response_type=token&client_id=demo';
-  public token: object;
+  public token: string;
 
   constructor(private http: HttpClient) { }
 
@@ -18,8 +16,16 @@ export class AuthenticationService {
     headers: new HttpHeaders({ Authorization: 'Basic ZGVtbzpzU2R4T1lEQU0zRkJO' })
   };
 
-  doAuthentication(user: string, password: string): Observable<object> {
+  generateToken(user: string, password: string): Observable<object> {
     return this.http.post<object>(this.fluigURL + `&username=${user}&password=${password}`, null, this.httpHeader)
-      .pipe(retry(3));
+      .pipe(map(tokenGenerated => {
+        if (tokenGenerated !== undefined || tokenGenerated !== null) {
+          return this.token = Object.values(tokenGenerated)[0];
+        }
+      }));
+  }
+
+  getToken(): string {
+    return this.token;
   }
 }

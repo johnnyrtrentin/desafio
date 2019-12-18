@@ -1,29 +1,80 @@
 <nav class="navbar navbar-dark bg-primary">
     <a class="navbar-brand" href="/home">
-        <img src="../../assets/logo.svg" width="40" height="40" class="d-inline-block align-top"
-            alt="">
+        <img src="../../assets/logo.svg" width="40" height="40" class="d-inline-block align-top" alt="">
         Aplicativo Lista de Tarefas
     </a>
 </nav>
 
-<div class="input-group col-sm-5">
-    <input type="text" class="form-control" aria-label="Text input with segmented dropdown button">
-    <div class="input-group-append">
-      <button type="button" class="btn btn-outline-secondary">Action</button>
-      <button type="button" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="sr-only">Toggle Dropdown</span>
-      </button>
-      <div class="dropdown-menu">
-        <a class="dropdown-item" href="#">Action</a>
-        <a class="dropdown-item" href="#">Another action</a>
-        <a class="dropdown-item" href="#">Something else here</a>
-        <div role="separator" class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#">Separated link</a>
-      </div>
+<div class="input-group col-sm-3">
+    <input type="text" class="form-control" [(ngModel)]="newList.name"
+        aria-label="Campo de texto para Criar Lista de Tarefa" placeholder="Nome da Lista">
+</div>
+<div class="input-group col-sm-3">
+    <input type="text" class="form-control" [(ngModel)]="newList.description"
+        aria-label="Campo de texto para Descrição da Lista de Tarefa" placeholder="Descrição da Lista">
+</div>
+
+{{ newList.name }}
+<div class="col-md-5">
+    <button type="button" class="btn btn-success" (click)="createNewList()">Adicionar</button>
+    <button type="button" class="btn btn-light" (click)="resetInputsList()">Cancelar</button>
+</div>
+
+<div class="col-md-5">
+    <button type="button" class="btn btn-warning" (click)="getTokenAccess()">Gerar Token</button>
+</div>
+
+<div class="card w-50 ">
+    <div class="card-body">
+        <h5 class="card-title">teste</h5>
+        <p class="card-text">dasdausdgydgqwydguqwgduqwgduygdyqwgdyuqgdyqwgdqgwug</p>
+        <span>
+            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modal">Adicionar
+                Tarefa</button>
+        </span>
     </div>
-  </div>
+</div>
 
-<button type="button" class="btn btn-success" (click)="teste()">Adicionar</button>
-<button type="button" class="btn btn-light" (click)="cancel()">Cancelar</button>
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="Modal para criação de Tarefas"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal">Criar Nova Tarefa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Fechar Modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="recipient-name" class="col-form-label">Nome da Tarefa</label>
+                    <input type="text" class="form-control" id="recipient-name" [(ngModel)]="modalData">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal" (click)="createNewTask()">
+                    Criar Tarefa
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
-{{teste}}
+<!-- <div class="collapse" id="collapseExample">
+    <div class="card w-50 card-body">
+        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim
+        keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+    </div>
+</div> -->
+
+<!-- 
+<div *ngIf="allList">
+    <div *ngFor="let list of allList">
+        <div class="card w-50 " data-toggle="collapse">
+            <div class="card-body">
+                <h5 class="card-title">{{list.name}}</h5>
+            </div>
+        </div>
+    </div>
+</div> -->
