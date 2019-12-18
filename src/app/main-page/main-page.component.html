@@ -24,7 +24,7 @@
     <button type="button" class="btn btn-warning" (click)="getTokenAccess()">Gerar Token</button>
 </div>
 
-<div class="card w-50 ">
+<!-- <div class="card w-50 ">
     <div class="card-body">
         <h5 class="card-title">teste</h5>
         <p class="card-text">dasdausdgydgqwydguqwgduqwgduygdyqwgdyuqgdyqwgdqgwug</p>
@@ -33,7 +33,7 @@
                 Tarefa</button>
         </span>
     </div>
-</div>
+</div> -->
 
 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="Modal para criação de Tarefas"
     aria-hidden="true">
@@ -68,13 +68,14 @@
     </div>
 </div> -->
 
-<!-- 
+
 <div *ngIf="allList">
     <div *ngFor="let list of allList">
         <div class="card w-50 " data-toggle="collapse">
             <div class="card-body">
                 <h5 class="card-title">{{list.name}}</h5>
+                <h5 class="card-text">{{list.description}}</h5>
             </div>
         </div>
     </div>
-</div> -->
+</div>

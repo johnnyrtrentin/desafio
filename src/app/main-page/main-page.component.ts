@@ -15,10 +15,10 @@ import { ListInfo } from '../models/list-info.model';
 export class MainPageComponent implements OnInit {
   private numberID = 1;
 
-  public dataFromNewGeneratedList = new ListInfo();
+  public newList:ListModel = new ListModel;
+  public dataFromNewGeneratedList: ListInfo;
   public allListsCreated: object = {};
-  public newList = new ListModel();
-  public allList: Array<object> = [];
+  public allList: Array<any> = [];
   public modalData: any;
 
   constructor(private auth: AuthenticationService, private listService: ManipulateListsService) { }
@@ -32,6 +32,8 @@ export class MainPageComponent implements OnInit {
 
   createNewList(): void {
     this.newList.sortValue = this.numberID++;
+    this.dataFromNewGeneratedList = new ListInfo;
+    
     this.listService.createList(this.newList).subscribe(response => {
       for (const key in response) {
         if (key === 'id') {
@@ -42,18 +44,8 @@ export class MainPageComponent implements OnInit {
           this.dataFromNewGeneratedList.description = response[key];
         }
       }
-
       this.allList.push(this.dataFromNewGeneratedList);
-      console.log(this.allList)
-      // Object.assign(this.allLists, this.listInfo);
-      // this.tst = Object.keys(this.allLists).map(value =>
-      //     this.allLists[value]);
-      // console.log(response);
-      // console.log(this.allLists);
-      // console.log(this.tst);
-
     });
-
     this.resetInputsList();
   }
   createNewTask(): void {
