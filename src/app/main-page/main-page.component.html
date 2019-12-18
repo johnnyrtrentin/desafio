@@ -14,7 +14,6 @@
         aria-label="Campo de texto para Descrição da Lista de Tarefa" placeholder="Descrição da Lista">
 </div>
 
-{{ newList.name }}
 <div class="col-md-5">
     <button type="button" class="btn btn-success" (click)="createNewList()">Adicionar</button>
     <button type="button" class="btn btn-light" (click)="resetInputsList()">Cancelar</button>
@@ -24,6 +23,35 @@
     <button type="button" class="btn btn-warning" (click)="getTokenAccess()">Gerar Token</button>
 </div>
 
+
+<div *ngIf="allList">
+    <div *ngFor="let list of allList">
+        <div class="card w-50 " data-toggle="collapse" data-target="#taskCollapse">
+            <div class="card-body">
+                <h5 class="card-title">{{list.name}}</h5>
+                <p class="card-text">{{list.description}}</p>
+                <span>
+                    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modal">Adicionar
+                        Tarefa</button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngFor="let taskList of allList">
+    <div class="collapse" id="taskCollapse">
+        <div class="card w-50 card-body">
+
+            <div *ngIf="taskList.tasks">
+                <div *ngFor="let task of taskList.tasks">
+                    {{task}}
+                </div>
+            </div>
+          
+        </div>
+    </div>
+</div>
 <!-- <div class="card w-50 ">
     <div class="card-body">
         <h5 class="card-title">teste</h5>
@@ -34,6 +62,7 @@
         </span>
     </div>
 </div> -->
+
 
 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="Modal para criação de Tarefas"
     aria-hidden="true">
@@ -48,7 +77,7 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label for="recipient-name" class="col-form-label">Nome da Tarefa</label>
-                    <input type="text" class="form-control" id="recipient-name" [(ngModel)]="modalData">
+                    <input type="text" class="form-control" id="recipient-name" [(ngModel)]="newTask.name">
                 </div>
             </div>
             <div class="modal-footer">
@@ -56,25 +85,6 @@
                 <button type="button" class="btn btn-success" data-dismiss="modal" (click)="createNewTask()">
                     Criar Tarefa
                 </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- <div class="collapse" id="collapseExample">
-    <div class="card w-50 card-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim
-        keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
-    </div>
-</div> -->
-
-
-<div *ngIf="allList">
-    <div *ngFor="let list of allList">
-        <div class="card w-50 " data-toggle="collapse">
-            <div class="card-body">
-                <h5 class="card-title">{{list.name}}</h5>
-                <h5 class="card-text">{{list.description}}</h5>
             </div>
         </div>
     </div>

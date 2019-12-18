@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 
 import { AuthenticationService } from '../services/authetication.service';
 import { ManipulateListsService } from '../services/manipulate-lists.service';
+import { ManipulateTasksService } from '../services/manipulate-tasks.service';
 
 import { ListModel } from '../models/list-create.model';
 import { ListInfo } from '../models/list-info.model';
+import { TaskModel } from '../models/task.model';
 
 @Component({
   selector: 'app-manipulate-list',
@@ -14,14 +16,17 @@ import { ListInfo } from '../models/list-info.model';
 
 export class MainPageComponent implements OnInit {
   private numberID = 1;
+  private haveTask: boolean = false;
 
-  public newList:ListModel = new ListModel;
+  public newList: ListModel = new ListModel;
+  public newTask: TaskModel = new TaskModel;
   public dataFromNewGeneratedList: ListInfo;
-  public allListsCreated: object = {};
   public allList: Array<any> = [];
-  public modalData: any;
+  public allTask: Array<TaskModel> = [];
+  public showTasks: Array<any> = [];
 
-  constructor(private auth: AuthenticationService, private listService: ManipulateListsService) { }
+  constructor(private auth: AuthenticationService, private listService: ManipulateListsService,
+    private taskService: ManipulateTasksService) { }
 
   ngOnInit() { }
 
@@ -33,7 +38,7 @@ export class MainPageComponent implements OnInit {
   createNewList(): void {
     this.newList.sortValue = this.numberID++;
     this.dataFromNewGeneratedList = new ListInfo;
-    
+
     this.listService.createList(this.newList).subscribe(response => {
       for (const key in response) {
         if (key === 'id') {
@@ -49,9 +54,21 @@ export class MainPageComponent implements OnInit {
     this.resetInputsList();
   }
   createNewTask(): void {
-    console.log(this.modalData);
-
+    if (this.newTask.name !== undefined) {
+      this.taskService.createTask(this.dataFromNewGeneratedList.id, this.newTask)
+        .subscribe(response => {
+          this.dataFromNewGeneratedList.tasks = [];
+          this.allTask.push(response);
+          this.allList.map(valuesList => {
+            this.allTask.map(valuesTask => {
+              if (valuesList['id'] === valuesTask['listId'])
+                this.dataFromNewGeneratedList.tasks.push(valuesTask);
+            });
+          });
+        });
+    }
     this.resetInputsModal();
+    this.returnTaskName();
   }
 
   resetInputsList(): void {
@@ -59,7 +76,22 @@ export class MainPageComponent implements OnInit {
     this.newList.description = null;
   }
 
+  public returnTaskName() {
+    console.log(this.allList)
+    // console.log(this.allTask):
+    // console.log(this.dataFromNewGeneratedList)
+    // this.allList.map(valuesList => {
+    //   this.allTask.forEach(valuesTask => {
+    //     console.log(valuesTask);
+    //     if (valuesList['id'] === valuesTask['listId'])
+    //       this.allList.push(valuesTask);
+
+    //     // this.dataFromNewGeneratedList.tasks.push(valuesTask);
+    //   });
+    // });
+  }
+
   resetInputsModal(): void {
-    this.modalData = null;
+    this.newTask.name = null;
   }
 }

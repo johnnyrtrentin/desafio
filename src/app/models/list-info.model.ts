@@ -4,6 +4,6 @@ export class ListInfo {
     active: boolean;
     name: string;
     description: string;
-    tasks: Array<object>[];
+    tasks: Array<object>;
     status: Array<object>[];
 }
