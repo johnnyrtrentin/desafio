@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AuthenticationService } from '../services/authetication.service';
-import { ManipulateListsService } from '../services/manipulate-lists.service';
-import { ManipulateTasksService } from '../services/manipulate-tasks.service';
+import { ListsService } from '../services/list.service';
+import { TasksService } from '../services/tasks.service';
 
-import { ListModel } from '../models/list-create.model';
-import { ListInfo } from '../models/list-info.model';
-import { TaskModel } from '../models/task.model';
+import { TaskModel } from '../models/tasks.model';
+import { ListModel } from '../models/list.model';
+import { ListModelInformation } from '../models/list-info.model';
 
 @Component({
   selector: 'app-manipulate-list',
@@ -14,84 +14,71 @@ import { TaskModel } from '../models/task.model';
   styleUrls: ['./main-page.component.css']
 })
 
-export class MainPageComponent implements OnInit {
+export class MainPageComponent {
   private numberID = 1;
-  private haveTask: boolean = false;
 
-  public newList: ListModel = new ListModel;
-  public newTask: TaskModel = new TaskModel;
-  public dataFromNewGeneratedList: ListInfo;
+  public listModel: ListModelInformation;
+  public newList: ListModel = new ListModel();
+  public newTask: TaskModel = new TaskModel();
   public allList: Array<any> = [];
   public allTask: Array<TaskModel> = [];
-  public showTasks: Array<any> = [];
 
-  constructor(private auth: AuthenticationService, private listService: ManipulateListsService,
-    private taskService: ManipulateTasksService) { }
+  constructor(private auth: AuthenticationService, private listService: ListsService,
+              private taskService: TasksService) { }
 
-  ngOnInit() { }
-
-  getTokenAccess(): void {
-    this.auth.generateToken('johnny.trentin@desafiofluig.com', 'Johnny@123').subscribe(response =>
-      console.log(response));
+  public getTokenAccess(): void {
+    this.auth.generateToken('johnny.trentin@desafiofluig.com', 'Johnny@123')
+      .subscribe(response => ({}));
   }
 
-  createNewList(): void {
+  public createNewList(): void {
     this.newList.sortValue = this.numberID++;
-    this.dataFromNewGeneratedList = new ListInfo;
+    this.listModel = new ListModelInformation();
 
     this.listService.createList(this.newList).subscribe(response => {
       for (const key in response) {
         if (key === 'id') {
-          this.dataFromNewGeneratedList.id = response[key];
+          this.listModel.id = response[key];
         } else if (key === 'name') {
-          this.dataFromNewGeneratedList.name = response[key];
+          this.listModel.name = response[key];
         } else if (key === 'description') {
-          this.dataFromNewGeneratedList.description = response[key];
+          this.listModel.description = response[key];
         }
       }
-      this.allList.push(this.dataFromNewGeneratedList);
+      this.allList.push(this.listModel);
     });
     this.resetInputsList();
   }
-  createNewTask(): void {
+
+  public createNewTask(): void {
     if (this.newTask.name !== undefined) {
-      this.taskService.createTask(this.dataFromNewGeneratedList.id, this.newTask)
-        .subscribe(response => {
-          this.dataFromNewGeneratedList.tasks = [];
-          this.allTask.push(response);
-          this.allList.map(valuesList => {
-            this.allTask.map(valuesTask => {
-              if (valuesList['id'] === valuesTask['listId'])
-                this.dataFromNewGeneratedList.tasks.push(valuesTask);
-            });
+      this.taskService.createTask(this.listModel.id, this.newTask).subscribe(response => {
+        this.allTask.push(response);
+
+        this.allList.filter(valuesList => {
+          this.listModel.tasks = [];
+
+          this.allTask.map(valuesTask => {
+            if (valuesList.id === valuesTask.listId) {
+              this.listModel.tasks.push(valuesTask);
+            }
           });
         });
+      });
     }
     this.resetInputsModal();
-    this.returnTaskName();
   }
 
-  resetInputsList(): void {
+  public resetInputsList(): void {
     this.newList.name = null;
     this.newList.description = null;
   }
 
-  public returnTaskName() {
-    console.log(this.allList)
-    // console.log(this.allTask):
-    // console.log(this.dataFromNewGeneratedList)
-    // this.allList.map(valuesList => {
-    //   this.allTask.forEach(valuesTask => {
-    //     console.log(valuesTask);
-    //     if (valuesList['id'] === valuesTask['listId'])
-    //       this.allList.push(valuesTask);
-
-    //     // this.dataFromNewGeneratedList.tasks.push(valuesTask);
-    //   });
-    // });
-  }
-
-  resetInputsModal(): void {
+  public resetInputsModal(): void {
     this.newTask.name = null;
   }
+
+  public editTask(): void { }
+  public deleteTask(): void { }
+  public editStatusTask(): void { }
 }

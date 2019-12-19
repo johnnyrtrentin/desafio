@@ -5,6 +5,7 @@
     </a>
 </nav>
 
+<br>
 <div class="input-group col-sm-3">
     <input type="text" class="form-control" [(ngModel)]="newList.name"
         aria-label="Campo de texto para Criar Lista de Tarefa" placeholder="Nome da Lista">
@@ -13,63 +14,64 @@
     <input type="text" class="form-control" [(ngModel)]="newList.description"
         aria-label="Campo de texto para Descrição da Lista de Tarefa" placeholder="Descrição da Lista">
 </div>
-
 <div class="col-md-5">
     <button type="button" class="btn btn-success" (click)="createNewList()">Adicionar</button>
     <button type="button" class="btn btn-light" (click)="resetInputsList()">Cancelar</button>
 </div>
-
 <div class="col-md-5">
     <button type="button" class="btn btn-warning" (click)="getTokenAccess()">Gerar Token</button>
 </div>
 
-
-<div *ngIf="allList">
-    <div *ngFor="let list of allList">
-        <div class="card w-50 " data-toggle="collapse" data-target="#taskCollapse">
-            <div class="card-body">
-                <h5 class="card-title">{{list.name}}</h5>
-                <p class="card-text">{{list.description}}</p>
-                <span>
-                    <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modal">Adicionar
-                        Tarefa</button>
-                </span>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div *ngFor="let taskList of allList">
-    <div class="collapse" id="taskCollapse">
-        <div class="card w-50 card-body">
-
-            <div *ngIf="taskList.tasks">
-                <div *ngFor="let task of taskList.tasks">
-                    {{task}}
+<br>
+<div class="row row-cols-1 row-cols-md-3 d-flex">
+    <div class="d-flex align-items-start">
+        <div *ngIf="allList" class="d-flex flex-nowrap">
+            <div *ngFor="let list of allList">
+                <div class="card mb-4 d-flex card-body ml-auto">
+                    <h5 class="card-title">{{list.name}}</h5>
+                    <p class="card-text">{{list.description}}</p>
+                    <span>
+                        <button type="button" class="btn btn-dark btn-sm" data-toggle="modal" data-target="#modal">
+                            Adicionar Tarefa
+                        </button>
+                    </span>
+                    <br>
+                    <div *ngIf="list.tasks">
+                        <div *ngFor="let tasks of list.tasks">
+                            <div class="card mb-4 d-flex card-body ml-aut">
+                                <p class="card-text">
+                                    {{tasks.name}}
+                                </p>
+                                <div class="dropdown dropright">
+                                    <button class="btn btn-sm btn-secondary dropdown-toggle dropdown-toggle-split"
+                                        type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                                        aria-haspopup="true" aria-expanded="false">
+                                        Opções
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <button class="dropdown-item" type="button" (click)="editTask()">Editar
+                                            tarefa</button>
+                                        <button class="dropdown-item" type="button" (click)="deleteTask()">Excluir
+                                            tarefa</button>
+                                        <button class="dropdown-item" type="button" (click)="editStatusTask()">Alterar
+                                            status</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-          
         </div>
     </div>
 </div>
-<!-- <div class="card w-50 ">
-    <div class="card-body">
-        <h5 class="card-title">teste</h5>
-        <p class="card-text">dasdausdgydgqwydguqwgduqwgduygdyqwgdyuqgdyqwgdqgwug</p>
-        <span>
-            <button type="button" class="btn btn-dark" data-toggle="modal" data-target="#modal">Adicionar
-                Tarefa</button>
-        </span>
-    </div>
-</div> -->
-
 
 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="Modal para criação de Tarefas"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal">Criar Nova Tarefa</h5>
+                <h5 class="modal-title" id="modal">Nova Tarefa</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Fechar Modal">
                     <span aria-hidden="true">&times;</span>
                 </button>

@@ -8,9 +8,9 @@ import { AppComponent } from './app.component';
 import { MainPageComponent } from './main-page/main-page.component';
 
 import { AuthenticationService } from './services/authetication.service';
-import { ManipulateListsService } from './services/manipulate-lists.service';
-import { ManipulateTasksService } from './services/manipulate-tasks.service';
-import { ManipulateStatusService } from './services/manipulate-status.service';
+import { ListsService } from './services/list.service';
+import { TasksService } from './services/tasks.service';
+import { StatusService } from './services/status.service';
 
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 
@@ -28,9 +28,9 @@ import { JwtInterceptor } from './helpers/jwt.interceptor';
   ],
   providers: [
     AuthenticationService,
-    ManipulateListsService,
-    ManipulateTasksService,
-    ManipulateStatusService,
+    ListsService,
+    TasksService,
+    StatusService,
     {
       provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true
     }
