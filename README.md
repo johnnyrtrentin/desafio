@@ -25,3 +25,4 @@ Após isso acessar http://localhost:4200
 [Jest]: https://jestjs.io/
 [Karma]: https://karma-runner.github.io/
 [Docker]: https://www.docker.com/
+[Protractor]: https://www.protractortest.org/
